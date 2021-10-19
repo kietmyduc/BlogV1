@@ -12,7 +12,8 @@ const useStyles = makeStyles({
         flexDirection: 'column',
         '& > *' : {
             padding: '0 5px 5px 5px'
-        }
+        },
+        cursor: 'pointer'
     },
     image: {
         height: 150,
