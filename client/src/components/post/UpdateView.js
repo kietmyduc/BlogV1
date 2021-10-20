@@ -2,7 +2,7 @@
 import {Box, Button, FormControl, InputBase, makeStyles, TextareaAutosize} from "@material-ui/core";
 import {AddCircle} from "@material-ui/icons";
 import {useEffect, useState} from "react";
-import {getPost, updatePost } from "../../services/api";
+import {getPost, updatePost, uploadFile} from "../../services/api";
 import {useHistory} from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -51,18 +51,37 @@ const initialValue = {
 //create page
 const UpdateView = ( {match}) => {
     const classes = useStyles();
-    const url = 'https://scontent.fdad3-3.fna.fbcdn.net/v/t1.6435-9/245976534_614422099715548_2914956693070755603_n.jpg?_nc_cat=109&ccb=1-5&_nc_sid=b9115d&_nc_ohc=uQMVv4jspTgAX_MmA4I&_nc_ht=scontent.fdad3-3.fna&oh=604657e0fa0b3054e70ef781aae28f1d&oe=6195D34E'
 
     const [post, setPost] = useState(initialValue);
-    useEffect(  () => {
-            const fetchData = async () => {
-                let data = await getPost(match.params.id)
-                console.log(data);
-                setPost(data)
+    const [file, setFile] = useState('');
+    const [image, setImage] = useState('');
+    useEffect(() => {
+        const getImage = async () => {
+            if (file){
+                console.log(post.picture)
+                const data = new FormData();
+                data.append("name", file.name);
+                data.append("file", file);
+
+                const image = await uploadFile(data);
+                post.picture = image.data;
+                setImage(image.data)
             }
-            fetchData();
-    },[])
+        }
+        getImage();
+    }, [file])
+
+    useEffect(() => {
+        const fetchData = async () => {
+            let data = await getPost(match.params.id);
+            setPost(data);
+        }
+        fetchData();
+    }, []);
+
     const history = useHistory();
+
+    const url =  post.picture ? post.picture : 'https://scontent.fdad3-3.fna.fbcdn.net/v/t1.6435-9/245976534_614422099715548_2914956693070755603_n.jpg?_nc_cat=109&ccb=1-5&_nc_sid=b9115d&_nc_ohc=uQMVv4jspTgAX_MmA4I&_nc_ht=scontent.fdad3-3.fna&oh=604657e0fa0b3054e70ef781aae28f1d&oe=6195D34E'
 
     const handleChange = (e) => {
         setPost({...post, [e.target.name]: e.target.value})
@@ -77,7 +96,12 @@ const UpdateView = ( {match}) => {
         <Box className={classes.container}>
             <img className={classes.image} src={url} alt="banner"/>
             <FormControl className={classes.form}>
-                <AddCircle fontSize='large' color='action'/>
+                <label htmlFor="fileInput" style={{cursor: "pointer"}}>
+                    <AddCircle fontSize='large' color='action'/>
+                </label>
+                <input type='file' id='fileInput' style={{display: 'none',  cursor: "pointer"}}
+                       onChange={(event) => setFile(event.target.files[0])}
+                />
                 <InputBase placeholder='Title'
                            name={'title'}
                            onChange={e => handleChange(e)}
