@@ -36,16 +36,16 @@ const useStyles = makeStyles({
     }
 })
 
-const Post = () => {
-    const url = `https://scontent.fdad3-5.fna.fbcdn.net/v/t1.6435-9/p180x540/245862869_1180974569058218_2756586507264415517_n.jpg?_nc_cat=110&ccb=1-5&_nc_sid=8bfeb9&_nc_ohc=-4svKaaX4agAX9j1o_l&_nc_ht=scontent.fdad3-5.fna&oh=4a3257908aa1d3c55372e9909717ca42&oe=6192E1D2`;
+const Post = ({ post }) => {
+    const url = post.picture || `https://scontent.fdad3-5.fna.fbcdn.net/v/t1.6435-9/p180x540/245862869_1180974569058218_2756586507264415517_n.jpg?_nc_cat=110&ccb=1-5&_nc_sid=8bfeb9&_nc_ohc=-4svKaaX4agAX9j1o_l&_nc_ht=scontent.fdad3-5.fna&oh=4a3257908aa1d3c55372e9909717ca42&oe=6192E1D2`;
     const classes = useStyles();
     return(
         <Box className={classes.container}>
             <img src={url} alt="wrapper" className={classes.image}/>
-            <Typography className={classes.text}>Music</Typography>
-            <Typography className={classes.heading}>Mai Am Nhac</Typography>
-            <Typography className={classes.text}>Author: Team</Typography>
-            <Typography className={classes.detail}>Hello may Cung </Typography>
+            <Typography className={classes.text}>{post.categories}</Typography>
+            <Typography className={classes.heading}>{post.title}</Typography>
+            <Typography className={classes.text}>Author: {post.username}</Typography>
+            <Typography className={classes.detail}>{post.description}</Typography>
         </Box>
     )
 }

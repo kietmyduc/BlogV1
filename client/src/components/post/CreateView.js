@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
 const initialValue = {
     title: '',
     description: '',
-    image: '',
+    picture: '',
     username: 'Team',
     categories: 'All',
     createDate: new Date(),

@@ -12,18 +12,20 @@ const useStyles = makeStyles({
     },
     table: {
         border: '1px solid rgba(224, 224, 224, 1)',
-        cursor: 'pointer'
+        cursor: 'pointer',
+        textDecoration: 'none',
+        color: 'inherit'
     },
     cell: {
         fontSize: 20,
         "&:hover": {
             backgroundColor: 'rgb(7, 177, 77, 0.42)',
             fontSize: 24
-        }
+        },
     }, linkCreate: {
         textDecoration: 'none',
         color: 'inherit'
-    }
+    },
 })
 
 const Categories = () => {
@@ -36,15 +38,23 @@ const Categories = () => {
             <Table className={classes.table}>
                 <TableHead>
                     <TableRow>
-                        <TableCell className={classes.cell}>All Categories</TableCell>
+                        <TableCell className={classes.cell}>
+                            <Link to={'/'} className = {classes.linkCreate}>
+                                All Categories
+                            </Link>
+                        </TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                         {
-                            categories.map(categorie => {
+                            categories.map((category, index) => {
                                 return (
-                                    <TableRow>
-                                        <TableCell className={classes.cell}>{categorie}</TableCell>
+                                    <TableRow key={index}>
+                                            <TableCell className={classes.cell}>
+                                                <Link to={`/?category=${category}`} className = {classes.linkCreate}>
+                                                {category}
+                                                </Link>
+                                            </TableCell>
                                     </TableRow>
                                 )
                             })
